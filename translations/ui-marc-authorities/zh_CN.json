@@ -1,5 +1,6 @@
 {
     "meta.title": "MARC规范",
     "permission.app.enabled": "UI：已启用MARC规范模块",
-    "permission.authority-record.view": "查看MARC规范记录"
+    "permission.authority-record.view": "查看MARC规范记录",
+    "permission.authority-record.edit": "Edit MARC authority record"
 }
