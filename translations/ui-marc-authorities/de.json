@@ -1,5 +1,6 @@
 {
     "meta.title": "MARC Normdaten",
     "permission.app.enabled": "UI: MARC Normdaten-Modul ist aktiviert",
-    "permission.authority-record.view": "MARC Normdatensatz anzeigen"
+    "permission.authority-record.view": "MARC Normdatensatz anzeigen",
+    "permission.authority-record.edit": "Edit MARC authority record"
 }
