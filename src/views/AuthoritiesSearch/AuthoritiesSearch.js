@@ -1,6 +1,8 @@
 import {
   useState,
   useEffect,
+  useCallback,
+  useMemo,
 } from 'react';
 import {
   useHistory,
@@ -38,6 +40,11 @@ import {
 } from '@folio/stripes/core';
 
 import {
+  AcqDateRangeFilter,
+  buildFiltersObj,
+} from '@folio/stripes-acq-components';
+
+import {
   SearchTextareaField,
   SearchResultsList,
 } from '../../components';
@@ -47,6 +54,8 @@ import {
   searchResultListColumns,
 } from '../../constants';
 import css from './AuthoritiesSearch.css';
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 const prefix = 'authorities';
 const PAGE_SIZE = 10;
@@ -68,6 +77,8 @@ const AuthoritiesSearch = ({ children }) => {
 
   const [searchDropdownValue, setSearchDropdownValue] = useState('');
   const [searchIndex, setSearchIndex] = useState('');
+
+  const [filters, setFilters] = useState({});
 
   const columnMapping = {
     [searchResultListColumns.AUTH_REF_TYPE]: <FormattedMessage id="ui-marc-authorities.search-results-list.authRefType" />,
@@ -106,6 +117,7 @@ const AuthoritiesSearch = ({ children }) => {
   } = useAuthorities({
     searchQuery,
     searchIndex,
+    filters,
     pageSize: PAGE_SIZE,
   });
 
@@ -132,6 +144,9 @@ const AuthoritiesSearch = ({ children }) => {
   const resetAll = () => {
     setSearchInputValue('');
     setSearchDropdownValue('');
+    setSearchQuery('');
+    setSearchIndex('');
+    setFilters('');
 
     history.replace({
       pathname: location.pathname,
@@ -141,6 +156,17 @@ const AuthoritiesSearch = ({ children }) => {
   const handleLoadMore = (_pageAmount, offset) => {
     setOffset(offset);
   };
+
+  const applyFilters = useCallback(({ name, values }) => {
+    setFilters(currentFilters => {
+      return {
+        ...currentFilters,
+        [name]: values,
+      };
+    });
+  }, []);
+
+  const activeFilters = useMemo(() => buildFiltersObj(location.search), [location.search]);
 
   const renderResultsFirstMenu = () => {
     if (isFilterPaneVisible) {
@@ -228,6 +254,17 @@ const AuthoritiesSearch = ({ children }) => {
               </Icon>
             </Button>
           </form>
+
+          <AcqDateRangeFilter
+            activeFilters={activeFilters?.updatedDate || []}
+            labelId="ui-marc-authorities.updatedDate"
+            id="updatedDate"
+            name="updatedDate"
+            onChange={applyFilters}
+            disabled={isLoading}
+            closedByDefault
+            dateFormat={DATE_FORMAT}
+          />
         </Pane>
       }
       <Pane
