@@ -1,8 +1,6 @@
 import {
   useState,
   useEffect,
-  useCallback,
-  useMemo,
 } from 'react';
 import {
   useHistory,
@@ -18,6 +16,7 @@ import {
   useLocalStorage,
   writeStorage,
 } from '@rehooks/local-storage';
+import omit from 'lodash/omit';
 
 import {
   Button,
@@ -25,7 +24,6 @@ import {
   Pane,
   PaneMenu,
 } from '@folio/stripes/components';
-
 import {
   CollapseFilterPaneButton,
   ExpandFilterPaneButton,
@@ -33,20 +31,19 @@ import {
   useColumnManager,
   ColumnManagerMenu,
 } from '@folio/stripes/smart-components';
-
 import {
   AppIcon,
   useNamespace,
 } from '@folio/stripes/core';
-
 import {
-  AcqDateRangeFilter,
   buildFiltersObj,
+  buildSearch,
 } from '@folio/stripes-acq-components';
 
 import {
   SearchTextareaField,
   SearchResultsList,
+  SearchFilters,
 } from '../../components';
 import { useAuthorities } from '../../queries';
 import {
@@ -55,15 +52,12 @@ import {
 } from '../../constants';
 import css from './AuthoritiesSearch.css';
 
-const DATE_FORMAT = 'YYYY-MM-DD';
-
 const prefix = 'authorities';
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 100;
 
 const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
 };
-
 
 const AuthoritiesSearch = ({ children }) => {
   const intl = useIntl();
@@ -78,7 +72,13 @@ const AuthoritiesSearch = ({ children }) => {
   const [searchDropdownValue, setSearchDropdownValue] = useState('');
   const [searchIndex, setSearchIndex] = useState('');
 
-  const [filters, setFilters] = useState({});
+  const nonFilterUrlParams = ['query', 'qindex'];
+
+  const getInitialFilters = () => {
+    return omit(buildFiltersObj(location.search), nonFilterUrlParams);
+  };
+
+  const [filters, setFilters] = useState(getInitialFilters());
 
   const columnMapping = {
     [searchResultListColumns.AUTH_REF_TYPE]: <FormattedMessage id="ui-marc-authorities.search-results-list.authRefType" />,
@@ -109,11 +109,28 @@ const AuthoritiesSearch = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const queryParams = {
+      query: searchQuery,
+      qindex: searchIndex,
+      ...filters,
+    };
+
+    const searchString = `${buildSearch(queryParams)}`;
+
+    history.replace({
+      pathname: location.pathname,
+      search: searchString,
+    });
+  }, [searchQuery, searchIndex, filters]);
+
   const {
     authorities,
     isLoading,
+    isLoaded,
     totalRecords,
     setOffset,
+    query,
   } = useAuthorities({
     searchQuery,
     searchIndex,
@@ -147,26 +164,11 @@ const AuthoritiesSearch = ({ children }) => {
     setSearchQuery('');
     setSearchIndex('');
     setFilters('');
-
-    history.replace({
-      pathname: location.pathname,
-    });
   };
 
   const handleLoadMore = (_pageAmount, offset) => {
     setOffset(offset);
   };
-
-  const applyFilters = useCallback(({ name, values }) => {
-    setFilters(currentFilters => {
-      return {
-        ...currentFilters,
-        [name]: values,
-      };
-    });
-  }, []);
-
-  const activeFilters = useMemo(() => buildFiltersObj(location.search), [location.search]);
 
   const renderResultsFirstMenu = () => {
     if (isFilterPaneVisible) {
@@ -255,26 +257,11 @@ const AuthoritiesSearch = ({ children }) => {
             </Button>
           </form>
 
-          <AcqDateRangeFilter
-            activeFilters={activeFilters?.createdDate || []}
-            labelId="ui-marc-authorities.createdDate"
-            id="createdDate"
-            name="createdDate"
-            onChange={applyFilters}
-            disabled={isLoading}
-            closedByDefault
-            dateFormat={DATE_FORMAT}
-          />
-
-          <AcqDateRangeFilter
-            activeFilters={activeFilters?.updatedDate || []}
-            labelId="ui-marc-authorities.updatedDate"
-            id="updatedDate"
-            name="updatedDate"
-            onChange={applyFilters}
-            disabled={isLoading}
-            closedByDefault
-            dateFormat={DATE_FORMAT}
+          <SearchFilters
+            activeFilters={filters}
+            isSearching={isLoading}
+            setFilters={setFilters}
+            query={query}
           />
         </Pane>
       }
@@ -283,6 +270,13 @@ const AuthoritiesSearch = ({ children }) => {
         appIcon={<AppIcon app="marc-authorities" />}
         defaultWidth="fill"
         paneTitle={intl.formatMessage({ id: 'ui-marc-authorities.meta.title' })}
+        paneSub={(
+          intl.formatMessage({
+            id: 'ui-marc-authorities.search-results-list.paneSub',
+          }, {
+            totalRecords,
+          })
+        )}
         firstMenu={renderResultsFirstMenu()}
         actionMenu={renderActionMenu}
       >
@@ -292,7 +286,12 @@ const AuthoritiesSearch = ({ children }) => {
           pageSize={PAGE_SIZE}
           onNeedMoreData={handleLoadMore}
           loading={isLoading}
+          loaded={isLoaded}
           visibleColumns={visibleColumns}
+          isFilterPaneVisible={isFilterPaneVisible}
+          toggleFilterPane={toggleFilterPane}
+          hasFilters={!!filters.length}
+          query={searchQuery}
         />
       </Pane>
       {children}
