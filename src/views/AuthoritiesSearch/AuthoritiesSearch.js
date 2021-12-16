@@ -5,7 +5,7 @@ import {
 import {
   useHistory,
   useLocation,
-} from 'react-router-dom';
+} from 'react-router';
 import {
   FormattedMessage,
   useIntl,
@@ -23,6 +23,8 @@ import {
   Icon,
   Pane,
   PaneMenu,
+  MenuSection,
+  Select,
 } from '@folio/stripes/components';
 import {
   CollapseFilterPaneButton,
@@ -46,9 +48,11 @@ import {
   SearchFilters,
 } from '../../components';
 import { useAuthorities } from '../../queries';
+import { useSortColumnManager } from '../../hooks';
 import {
   rawSearchableIndexes,
   searchResultListColumns,
+  sortOrders,
 } from '../../constants';
 import css from './AuthoritiesSearch.css';
 
@@ -72,7 +76,7 @@ const AuthoritiesSearch = ({ children }) => {
   const [searchDropdownValue, setSearchDropdownValue] = useState('');
   const [searchIndex, setSearchIndex] = useState('');
 
-  const nonFilterUrlParams = ['query', 'qindex'];
+  const nonFilterUrlParams = ['query', 'qindex', 'sort'];
 
   const getInitialFilters = () => {
     return omit(buildFiltersObj(location.search), nonFilterUrlParams);
@@ -92,6 +96,13 @@ const AuthoritiesSearch = ({ children }) => {
 
   const filterPaneVisibilityKey = getNamespace({ key: 'marcAuthoritiesFilterPaneVisibility' });
 
+  const {
+    sortOrder,
+    sortedColumn,
+    onChangeSortOption,
+    onHeaderClick,
+  } = useSortColumnManager();
+
   useEffect(() => {
     const locationSearchParams = queryString.parse(location.search);
 
@@ -105,6 +116,14 @@ const AuthoritiesSearch = ({ children }) => {
         setSearchDropdownValue(locationSearchParams.qindex);
         setSearchIndex(locationSearchParams.qindex);
       }
+
+      if (locationSearchParams.sort) {
+        if (locationSearchParams.sort[0] === '-') {
+          onChangeSortOption(locationSearchParams.sort.substring(1), sortOrders.DES);
+        } else {
+          onChangeSortOption(locationSearchParams.sort, sortOrders.ASC);
+        }
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -116,13 +135,19 @@ const AuthoritiesSearch = ({ children }) => {
       ...filters,
     };
 
+    if (sortOrder && sortedColumn) {
+      const order = sortOrder === sortOrders.ASC ? '' : '-';
+
+      queryParams.sort = `${order}${sortedColumn}`;
+    }
+
     const searchString = `${buildSearch(queryParams)}`;
 
     history.replace({
       pathname: location.pathname,
       search: searchString,
     });
-  }, [searchQuery, searchIndex, filters]);
+  }, [searchQuery, searchIndex, filters, sortOrder, sortedColumn]);
 
   const {
     authorities,
@@ -135,6 +160,8 @@ const AuthoritiesSearch = ({ children }) => {
     searchQuery,
     searchIndex,
     filters,
+    sortOrder,
+    sortedColumn,
     pageSize: PAGE_SIZE,
   });
 
@@ -164,6 +191,7 @@ const AuthoritiesSearch = ({ children }) => {
     setSearchQuery('');
     setSearchIndex('');
     setFilters('');
+    onChangeSortOption('');
   };
 
   const handleLoadMore = (_pageAmount, offset) => {
@@ -184,15 +212,41 @@ const AuthoritiesSearch = ({ children }) => {
     );
   };
 
+  const options = Object.values(searchResultListColumns).map((option) => ({
+    value: option,
+    label: intl.formatMessage({ id: `ui-marc-authorities.search-results-list.${option}` }),
+  }));
+
+  const sortByOptions = [
+    {
+      value: '',
+      label: intl.formatMessage({ id: 'ui-marc-authorities.actions.menuSection.sortBy.relevance' }),
+    },
+    ...options,
+  ];
+
   const renderActionMenu = () => {
     return (
-      <ColumnManagerMenu
-        prefix={prefix}
-        visibleColumns={visibleColumns}
-        toggleColumn={toggleColumn}
-        columnMapping={columnMapping}
-        excludeColumns={[searchResultListColumns.HEADING_REF]}
-      />
+      <>
+        <MenuSection
+          data-testid="menu-section-sort-by"
+          label={intl.formatMessage({ id: 'ui-marc-authorities.actions.menuSection.sortBy' })}
+        >
+          <Select
+            data-testid="sort-by-selection"
+            dataOptions={sortByOptions}
+            value={sortedColumn}
+            onChange={e => onChangeSortOption(e.target.value)}
+          />
+        </MenuSection>
+        <ColumnManagerMenu
+          prefix={prefix}
+          visibleColumns={visibleColumns}
+          toggleColumn={toggleColumn}
+          columnMapping={columnMapping}
+          excludeColumns={[searchResultListColumns.HEADING_REF]}
+        />
+      </>
     );
   };
 
@@ -288,6 +342,9 @@ const AuthoritiesSearch = ({ children }) => {
           loading={isLoading}
           loaded={isLoaded}
           visibleColumns={visibleColumns}
+          sortedColumn={sortedColumn}
+          sortOrder={sortOrder}
+          onHeaderClick={onHeaderClick}
           isFilterPaneVisible={isFilterPaneVisible}
           toggleFilterPane={toggleFilterPane}
           hasFilters={!!filters.length}

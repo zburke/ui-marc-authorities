@@ -9,7 +9,9 @@ import {
 } from '@folio/stripes/core';
 
 import { buildQuery } from '../utils';
-import { filterConfig } from '../../constants';
+import {
+  filterConfig,
+} from '../../constants';
 
 const AUTHORITIES_API = 'search/authorities';
 
@@ -18,6 +20,8 @@ const useAuthorities = ({
   searchIndex,
   filters,
   pageSize,
+  sortOrder,
+  sortedColumn,
 }) => {
   const ky = useOkapiKy();
   const [namespace] = useNamespace();
@@ -27,6 +31,7 @@ const useAuthorities = ({
   const queryParams = {
     query: searchQuery,
     qindex: searchIndex,
+    sort: '',
     ...filters,
   };
 
@@ -48,7 +53,11 @@ const useAuthorities = ({
       return filterData.parse(filterValues);
     });
 
-  const cqlQuery = [...cqlSearch, ...cqlFilters].join(' and ');
+  let cqlQuery = [...cqlSearch, ...cqlFilters].join(' and ');
+
+  if (sortOrder && sortedColumn) {
+    cqlQuery += ` sortBy ${sortedColumn}/sort.${sortOrder}`;
+  }
 
   const searchParams = {
     query: cqlQuery,
