@@ -14,3 +14,4 @@
 * [UIMARCAUTH-24](https://issues.folio.org/browse/UIMARCAUTH-24) Add support for Facet: Type of heading.
 * [UIMARCAUTH-19](https://issues.folio.org/browse/UIMARCAUTH-19) Implement Results List Sort options.
 * [UIMARCAUTH-17](https://issues.folio.org/browse/UIMARCAUTH-17) Display a Exclude see from limiter.
+* [UIMARCAUTH-40](https://issues.folio.org/browse/UIMARCAUTH-40) Fix Results List column headers are smushed.
