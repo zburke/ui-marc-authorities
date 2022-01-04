@@ -16,6 +16,7 @@ const propTypes = {
   loading: PropTypes.bool,
   onChange: PropTypes.func,
   onChangeIndex: PropTypes.func,
+  onSubmitSearch: PropTypes.func.isRequired,
   searchableIndexes: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.string,
@@ -34,6 +35,7 @@ const SearchTextareaField = ({
   onChangeIndex,
   selectedIndex,
   disabled,
+  onSubmitSearch,
   ...rest
 }) => {
   const intl = useIntl();
@@ -44,6 +46,13 @@ const SearchTextareaField = ({
     css.searchFieldWrap,
     className,
   );
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      onSubmitSearch();
+    }
+  };
 
   return (
     <div className={rootStyles}>
@@ -64,6 +73,7 @@ const SearchTextareaField = ({
         data-testid="search-textarea"
         loading={loading}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
         type="search"
         value={value || ''}
         readOnly={loading || rest.readOnly}

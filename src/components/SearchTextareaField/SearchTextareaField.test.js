@@ -51,4 +51,36 @@ describe('Given SearchTextareaField', () => {
       expect(onChange).toHaveBeenCalled();
     });
   });
+
+  describe('when user press "Enter" button', () => {
+    it('should handle form submit', async () => {
+      const mockOnSubmitSearch = jest.fn();
+      const { getByTestId } = renderSearchTextareaField({
+        onSubmitSearch: mockOnSubmitSearch,
+      });
+
+      fireEvent.change(getByTestId('search-textarea'), { target: { value: 'test' } });
+      fireEvent.keyDown(getByTestId('search-textarea'), {
+        keyCode: 13,
+      });
+
+      expect(mockOnSubmitSearch).toHaveBeenCalled();
+    });
+  });
+
+  describe('when user press not "Enter" button', () => {
+    it('should not handle form submit', async () => {
+      const mockOnSubmitSearch = jest.fn();
+      const { getByTestId } = renderSearchTextareaField({
+        onSubmitSearch: mockOnSubmitSearch,
+      });
+
+      fireEvent.change(getByTestId('search-textarea'), { target: { value: 'test' } });
+      fireEvent.keyDown(getByTestId('search-textarea'), {
+        keyCode: 14,
+      });
+
+      expect(mockOnSubmitSearch).not.toHaveBeenCalled();
+    });
+  });
 });

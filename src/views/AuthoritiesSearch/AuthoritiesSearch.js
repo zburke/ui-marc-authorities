@@ -195,8 +195,10 @@ const AuthoritiesSearch = ({ children }) => {
   const onChangeIndex = (value) => setSearchDropdownValue(value);
 
   const onSubmitSearch = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     setSearchQuery(searchInputValue);
     setSearchIndex(searchDropdownValue);
@@ -311,6 +313,7 @@ const AuthoritiesSearch = ({ children }) => {
                 searchableIndexes={searchableIndexes}
                 onChangeIndex={(e) => onChangeIndex(e.target.value)}
                 selectedIndex={searchDropdownValue}
+                onSubmitSearch={onSubmitSearch}
               />
               <Button
                 id="submit-authorities-search"
