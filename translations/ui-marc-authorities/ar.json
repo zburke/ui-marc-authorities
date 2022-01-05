@@ -27,5 +27,6 @@
     "search.updatedDate": "تاريخ التحديث",
     "search.headingType": "نوع الرأس",
     "search.references": "مراجع",
-    "search.excludeSeeFrom": "استبعاد انظر من"
+    "search.excludeSeeFrom": "استبعاد انظر من",
+    "authority-record.edit": "Edit"
 }
