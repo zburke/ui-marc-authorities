@@ -27,5 +27,6 @@
     "search.updatedDate": "Date updated",
     "search.headingType": "Type of heading",
     "search.references": "References",
-    "search.excludeSeeFrom": "Exclude see from"
+    "search.excludeSeeFrom": "Exclude see from",
+    "authority-record.edit": "Edit"
 }

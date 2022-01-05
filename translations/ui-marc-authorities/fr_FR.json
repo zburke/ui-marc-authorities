@@ -23,9 +23,10 @@
     "search-results-list.paneSub": "{totalRecords, number} {totalRecords, plural, one {record found} other {records found}}",
     "actions.menuSection.sortBy": "Trier par",
     "actions.menuSection.sortBy.relevance": "Pertinence",
-    "search.createdDate": "Date created",
-    "search.updatedDate": "Date updated",
+    "search.createdDate": "Date de création",
+    "search.updatedDate": "Date de mise à jour",
     "search.headingType": "Type of heading",
     "search.references": "References",
-    "search.excludeSeeFrom": "Exclude see from"
+    "search.excludeSeeFrom": "Exclude see from",
+    "authority-record.edit": "Edit"
 }
