@@ -1,4 +1,7 @@
-import { useEffect } from 'react';
+import {
+  useEffect,
+  useContext,
+} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
@@ -7,6 +10,8 @@ import {
   Select,
   TextArea,
 } from '@folio/stripes/components';
+
+import { AuthoritiesSearchContext } from '../../context';
 
 import css from './SearchTextareaField.css';
 
@@ -34,18 +39,21 @@ const SearchTextareaField = ({
   className,
   id,
   value,
-  onChange,
   loading,
   searchableIndexes,
   placeholder,
-  onChangeIndex,
-  selectedIndex,
   disabled,
   onSubmitSearch,
   textAreaRef,
   ...rest
 }) => {
   const intl = useIntl();
+  const {
+    searchDropdownValue,
+    setSearchDropdownValue,
+    searchInputValue,
+    setSearchInputValue,
+  } = useContext(AuthoritiesSearchContext);
 
   const fitTextBoxToContent = () => {
     if (!textAreaRef.current?.style) {
@@ -84,9 +92,9 @@ const SearchTextareaField = ({
         disabled={loading}
         id={`${id}-qindex`}
         marginBottom0
-        onChange={onChangeIndex}
+        onChange={(e) => setSearchDropdownValue(e.target.value)}
         selectClass={css.select}
-        value={selectedIndex}
+        value={searchDropdownValue}
         data-testid="search-select"
         placeholder={placeholder}
       />
@@ -96,10 +104,10 @@ const SearchTextareaField = ({
         id={id}
         data-testid="search-textarea"
         loading={loading}
-        onChange={onChange}
+        onChange={(e) => setSearchInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         type="search"
-        value={value || ''}
+        value={searchInputValue || ''}
         readOnly={loading || rest.readOnly}
         inputRef={textAreaRef}
         aria-label={textAreaLabel}
