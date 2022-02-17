@@ -12,7 +12,6 @@ import { runAxeTest } from '@folio/stripes-testing';
 
 import Harness from '../../../test/jest/helpers/harness';
 import AuthorityView from './AuthorityView';
-import { SelectedAuthorityRecordContext } from '../../context';
 import { openEditShortcut } from '../../../test/utilities';
 
 const mockHistoryPush = jest.fn();
@@ -44,18 +43,16 @@ const authority = {
 };
 
 const renderAuthorityView = (props = {}) => render(
-  <SelectedAuthorityRecordContext.Provider value={[null, mockSetSelectedAuthorityRecordContext]}>
-    <Harness>
-      <CommandList commands={defaultKeyboardShortcuts}>
-        <AuthorityView
-          marcSource={marcSource}
-          authority={authority}
-          stripes={noop}
-          {...props}
-        />
-      </CommandList>
-    </Harness>
-  </SelectedAuthorityRecordContext.Provider>,
+  <Harness selectedRecordCtxValue={[null, mockSetSelectedAuthorityRecordContext]}>
+    <CommandList commands={defaultKeyboardShortcuts}>
+      <AuthorityView
+        marcSource={marcSource}
+        authority={authority}
+        stripes={noop}
+        {...props}
+      />
+    </CommandList>
+  </Harness>,
 );
 
 describe('Given AuthorityView', () => {

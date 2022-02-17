@@ -4,10 +4,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
-import {
-  useLocation,
-  useRouteMatch,
-} from 'react-router';
+import { useRouteMatch } from 'react-router';
 
 import {
   MultiColumnList,
@@ -18,13 +15,14 @@ import { SearchAndSortNoResultsMessage } from '@folio/stripes/smart-components';
 import { SelectedAuthorityRecordContext } from '../../context';
 
 import { AuthorityShape } from '../../constants/shapes';
-import {
-  searchResultListColumns,
-} from '../../constants';
+import { searchResultListColumns } from '../../constants';
+
+import css from './SearchResultsList.css';
 
 const propTypes = {
   authorities: PropTypes.arrayOf(AuthorityShape).isRequired,
   hasFilters: PropTypes.bool.isRequired,
+  hidePageIndices: PropTypes.bool,
   isFilterPaneVisible: PropTypes.bool.isRequired,
   loaded: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -56,9 +54,9 @@ const SearchResultsList = ({
   query,
   toggleFilterPane,
   hasFilters,
+  hidePageIndices,
 }) => {
   const intl = useIntl();
-  const location = useLocation();
   const match = useRouteMatch();
 
   const [selectedAuthorityRecordContext, setSelectedAuthorityRecordContext] = useContext(SelectedAuthorityRecordContext);
@@ -83,7 +81,8 @@ const SearchResultsList = ({
     },
     headingRef: (authority) => (
       <TextLink
-        to={`${match.path}/authorities/${authority.id}${location.search}`}
+        to={`${match.path}/authorities/${authority.id}`}
+        className={authority.isAnchor ? css.anchorLink : null}
       >
         {authority.headingRef}
       </TextLink>
@@ -98,7 +97,7 @@ const SearchResultsList = ({
     () => ({
       loaded: () => (hasFilters || query) && loaded,
       pending: () => loading,
-      failure: () => { },
+      failure: () => null,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [loading, hasFilters],
@@ -123,6 +122,7 @@ const SearchResultsList = ({
       sortOrder={sortOrder}
       onHeaderClick={onHeaderClick}
       autosize
+      hidePageIndices={hidePageIndices}
       isEmptyMessage={
         source ? (
           <div data-test-agreements-no-results-message>

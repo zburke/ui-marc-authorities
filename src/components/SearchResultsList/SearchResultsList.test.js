@@ -9,7 +9,6 @@ import { mockOffsetSize } from '@folio/stripes-acq-components/test/jest/helpers/
 
 import Harness from '../../../test/jest/helpers/harness';
 import SearchResultsList from './SearchResultsList';
-import { SelectedAuthorityRecordContext } from '../../context';
 import authorities from '../../../mocks/authorities';
 import {
   searchResultListColumns,
@@ -19,31 +18,29 @@ const mockToggleFilterPane = jest.fn();
 const mockSetSelectedAuthorityRecordContext = jest.fn();
 
 const renderSearchResultsList = (props = {}) => render(
-  <SelectedAuthorityRecordContext.Provider value={[null, mockSetSelectedAuthorityRecordContext]}>
-    <Harness>
-      <SearchResultsList
-        authorities={authorities}
-        visibleColumns={[
-          searchResultListColumns.AUTH_REF_TYPE,
-          searchResultListColumns.HEADING_REF,
-          searchResultListColumns.HEADING_TYPE,
-        ]}
-        totalResults={authorities.length}
-        loading={false}
-        loaded={false}
-        query=""
-        hasFilters={false}
-        pageSize={15}
-        onNeedMoreData={noop}
-        toggleFilterPane={mockToggleFilterPane}
-        isFilterPaneVisible
-        sortOrder=""
-        sortedColumn=""
-        onHeaderClick={jest.fn()}
-        {...props}
-      />
-    </Harness>
-  </SelectedAuthorityRecordContext.Provider>,
+  <Harness selectedRecordCtxValue={[null, mockSetSelectedAuthorityRecordContext]}>
+    <SearchResultsList
+      authorities={authorities}
+      visibleColumns={[
+        searchResultListColumns.AUTH_REF_TYPE,
+        searchResultListColumns.HEADING_REF,
+        searchResultListColumns.HEADING_TYPE,
+      ]}
+      totalResults={authorities.length}
+      loading={false}
+      loaded={false}
+      query=""
+      hasFilters={false}
+      pageSize={15}
+      onNeedMoreData={noop}
+      toggleFilterPane={mockToggleFilterPane}
+      isFilterPaneVisible
+      sortOrder=""
+      sortedColumn=""
+      onHeaderClick={jest.fn()}
+      {...props}
+    />
+  </Harness>,
 );
 
 describe('Given SearchResultsList', () => {
