@@ -93,11 +93,26 @@ const AuthorityView = ({
     const marcFields = marcSource.data.parsedRecord.content.fields.map(field => {
       const tag = Object.keys(field)[0];
 
-      const isHighlighted = highlightAuthRefFields[authority.data.authRefType].test(tag);
+      const isHighlightedTag = highlightAuthRefFields[authority.data.authRefType].test(tag);
+
+      if (!isHighlightedTag) {
+        return {
+          ...field,
+          isHighlighted: false,
+        };
+      }
+
+      const fieldContent = field[tag].subfields.reduce((contentArr, subfield) => {
+        const subfieldValue = Object.values(subfield)[0];
+
+        return [...contentArr, subfieldValue];
+      }, []).join(' ');
+
+      const isHeadingRefMatching = fieldContent.includes(authority.data.headingRef);
 
       return {
         ...field,
-        isHighlighted,
+        isHighlighted: isHeadingRefMatching && isHighlightedTag,
       };
     });
 
