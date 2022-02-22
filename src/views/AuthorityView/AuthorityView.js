@@ -96,10 +96,7 @@ const AuthorityView = ({
       const isHighlightedTag = highlightAuthRefFields[authority.data.authRefType].test(tag);
 
       if (!isHighlightedTag) {
-        return {
-          ...field,
-          isHighlighted: false,
-        };
+        return field;
       }
 
       const fieldContent = field[tag].subfields.reduce((contentArr, subfield) => {
@@ -112,7 +109,10 @@ const AuthorityView = ({
 
       return {
         ...field,
-        isHighlighted: isHeadingRefMatching && isHighlightedTag,
+        [tag]: {
+          ...field[tag],
+          isHighlighted: isHeadingRefMatching && isHighlightedTag,
+        },
       };
     });
 
