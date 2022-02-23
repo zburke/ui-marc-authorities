@@ -186,16 +186,6 @@ describe('Given AuthorityView', () => {
     });
   });
 
-  describe('when authority record has authRefType Authorized', () => {
-    it('should highlight 100 marc field', () => {
-      const { container } = renderAuthorityView();
-
-      const highlightedContent = [...container.querySelectorAll('mark')].map(mark => mark.textContent).join(' ');
-
-      expect(highlightedContent).toEqual('100 heading-ref');
-    });
-  });
-
   describe('when click on "Edit" button', () => {
     it('should redirect to EditQuickMarcRecord page', () => {
       const { getByText } = renderAuthorityView();

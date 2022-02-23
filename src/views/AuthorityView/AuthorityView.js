@@ -119,6 +119,7 @@ const AuthorityView = ({
     const marcSourceClone = cloneDeep(marcSource);
 
     set(marcSourceClone, 'data.parsedRecord.content.fields', marcFields);
+
     return marcSourceClone;
   };
 
@@ -138,7 +139,7 @@ const AuthorityView = ({
           })}
           isPaneset={false}
           marcTitle={intl.formatMessage({ id: 'ui-marc-authorities.marcHeading' })}
-          marc={markHighlightedFields(marcSource).data}
+          marc={markHighlightedFields().data}
           onClose={onClose}
           lastMenu={(
             <IfPermission perm="ui-marc-authorities.authority-record.edit">
