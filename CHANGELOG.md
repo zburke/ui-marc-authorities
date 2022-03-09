@@ -31,12 +31,13 @@
 * [UIMARCAUTH-57](https://issues.folio.org/browse/UIMARCAUTH-57) Fix cannot search by identifiers that contain a space.
 * [UIMARCAUTH-61](https://issues.folio.org/browse/UIMARCAUTH-61) Fix three pane view is not retained when you hit Edit and then click "X" or Cancel button.
 * [UIMARCAUTH-73](https://issues.folio.org/browse/UIMARCAUTH-73) Update Authority Search Options - Corporate/Conference Name & Personal Name.
-* [UIMARCAUTH-76](https://issues.folio.org/browse/UIMARCAUTH-65) Change query in Geographic name search option.
+* [UIMARCAUTH-76](https://issues.folio.org/browse/UIMARCAUTH-76) Change query in Geographic name search option
 * [UIMARCAUTH-70](https://issues.folio.org/browse/UIMARCAUTH-70) Clicking on Result in Results list should highlight the selected row.
 * [UIMARCAUTH-83](https://issues.folio.org/browse/UIMARCAUTH-83) Browse Authorities: Better handling for when there is no exact match.
 * [UIMARCAUTH-62](https://issues.folio.org/browse/UIMARCAUTH-62) Create a Subject heading/thesaurus facet.
 * [UIMARCAUTH-89](https://issues.folio.org/browse/UIMARCAUTH-89) Browse option selection searches all.
 * [UIMARCAUTH-72](https://issues.folio.org/browse/UIMARCAUTH-72) Update Authority Browse Options.
+* [UIMARCAUTH-74](https://issues.folio.org/browse/UIMARCAUTH-74) Advanced search does not work when editing Advanced Search box.
 
 ## [0.1.0](https://github.com/folio-org/ui-marc-authorities/tree/v0.1.0) (2021-01-20)
 
