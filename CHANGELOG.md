@@ -1,6 +1,8 @@
 # Change history for ui-marc-authorities
 
-## [1.0.0](IN PROGRESS)
+## IN PROGRESS
+
+## [1.0.0](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.0) (2022-03-10)
 
 * [UIMARCAUTH-6](https://issues.folio.org/browse/UIMARCAUTH-6) Add View MARC authority record permission.
 * [UIMARCAUTH-5](https://issues.folio.org/browse/UIMARCAUTH-5) Add Edit MARC authority record permission.
@@ -26,7 +28,7 @@
 * [UIMARCAUTH-50](https://issues.folio.org/browse/UIMARCAUTH-50) Do not bold Auth/Ref in Authorized/Reference column.
 * [UIMARCAUTH-28](https://issues.folio.org/browse/UIMARCAUTH-28) Browse MARC Authority Records > Display Browse headings toggle.
 * [UIMARCAUTH-52](https://issues.folio.org/browse/UIMARCAUTH-52) Update Keyword Search query to apply Exclude see also filter selection.
-* [UIMARCAUTH-60](https://issues.folio.org/browse/UIMARCAUTH-60) MARC authority record displays two different Last updated dates. 
+* [UIMARCAUTH-60](https://issues.folio.org/browse/UIMARCAUTH-60) MARC authority record displays two different Last updated dates.
 * [UIMARCAUTH-58](https://issues.folio.org/browse/UIMARCAUTH-58) Request for Facets fails - missing permissions.
 * [UIMARCAUTH-57](https://issues.folio.org/browse/UIMARCAUTH-57) Fix cannot search by identifiers that contain a space.
 * [UIMARCAUTH-61](https://issues.folio.org/browse/UIMARCAUTH-61) Fix three pane view is not retained when you hit Edit and then click "X" or Cancel button.
