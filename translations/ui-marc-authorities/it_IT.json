@@ -21,8 +21,8 @@
     "marcHeading": "MARC authority record",
     "authorityRecordSubtitle": "{heading} • Last updated: {lastUpdatedDate}",
     "search-results-list.paneSub": "{totalRecords, number} {totalRecords, plural, one {record found} other {records found}}",
-    "actions.menuSection.sortBy": "Sort by",
-    "actions.menuSection.sortBy.relevance": "Relevance",
+    "actions.menuSection.sortBy": "Ordina per",
+    "actions.menuSection.sortBy.relevance": "Rilevanza",
     "search.createdDate": "Date created",
     "search.updatedDate": "Date updated",
     "search.headingType": "Type of heading",
@@ -45,6 +45,8 @@
     "label.browse": "Browse",
     "label.search.textArea": "Enter search query",
     "query": "Query",
-    "advancedSearch": "Advanced search",
-    "none": "None"
+    "advancedSearch": "Ricerca avanzata",
+    "none": "None",
+    "browse.noMatch.wouldBeHereLabel": "would be here",
+    "search.subjectHeadings": "Subject heading/thesaurus"
 }

@@ -46,5 +46,7 @@
     "label.search.textArea": "قم بإدخال استعلام البحث",
     "query": "استعلام",
     "advancedSearch": "بحث متقدم",
-    "none": "لا شيء"
+    "none": "لا شيء",
+    "browse.noMatch.wouldBeHereLabel": "سيكون هنا",
+    "search.subjectHeadings": "رأس الموضوع/قاموس المرادفات"
 }
