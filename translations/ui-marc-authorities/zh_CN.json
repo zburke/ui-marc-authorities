@@ -46,5 +46,7 @@
     "label.search.textArea": "输入搜索查询",
     "query": "查询",
     "advancedSearch": "高级搜索",
-    "none": "无"
+    "none": "无",
+    "browse.noMatch.wouldBeHereLabel": "would be here",
+    "search.subjectHeadings": "Subject heading/thesaurus"
 }
