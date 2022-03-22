@@ -1,5 +1,5 @@
 {
-    "meta.title": "MARC Authority",
+    "meta.title": "MARC authority",
     "permission.app.enabled": "UI: MARC Authorities module is enabled",
     "permission.authority-record.view": "View MARC authority record",
     "permission.authority-record.edit": "Modifier la notice d'autorité MARC",
@@ -29,8 +29,8 @@
     "search.references": "References",
     "search.excludeSeeFrom": "Exclude see from",
     "authority-record.edit": "Modifier",
-    "navigation.app": "MARC Authorities app Search",
-    "navigation.content": "MARC Authorities documentation",
+    "navigation.app": "MARC authority app Search",
+    "navigation.content": "MARC authority documentation",
     "navigation.keyboardShortcuts": "Keyboard shortcuts",
     "shortcut.editRecord": "Edit a record",
     "shortcut.saveRecord": "Save a record",
