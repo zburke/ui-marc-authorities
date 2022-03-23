@@ -1,6 +1,14 @@
 # Change history for ui-marc-authorities
 
-## IN PROGRESS
+## [1.1.0](IN PROGRESS)
+* [UIMARCAUTH-92](https://issues.folio.org/browse/UIMARCAUTH-92) Change MARC Authority in universal header Apps dropdown and app context menu dropdown.
+* [UIMARCAUTH-108](https://issues.folio.org/browse/UIMARCAUTH-108) Cannot assign MARC authority permissions only.
+
+## [1.0.1](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.1) (2022-03-21)
+* [UIMARCAUTH-89](https://issues.folio.org/browse/UIMARCAUTH-89) Browse option selection searches all.
+* [UIMARCAUTH-96](https://issues.folio.org/browse/UIMARCAUTH-96) The 6th result of browse authority record is not highlighting in bold.
+* [UIMARCAUTH-97](https://issues.folio.org/browse/UIMARCAUTH-97) The selected Heading/Reference value does not match the value highlighted in the detail record.
+* [UIMARCAUTH-74](https://issues.folio.org/browse/UIMARCAUTH-74) Advanced search does not work when editing Advanced Search box.
 
 ## [1.0.0](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.0) (2022-03-10)
 
