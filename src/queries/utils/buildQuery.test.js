@@ -52,7 +52,18 @@ describe('Given buildQuery', () => {
         searchIndex: searchableIndexesValues.IDENTIFIER,
       });
 
-      expect(query).toBe('(identifiers.value=="%{query}")');
+      expect(query).toBe('(identifiers.value=="%{query}" and authRefType=="Authorized")');
+    });
+
+    describe('when isExcludedSeeFromLimiter is true', () => {
+      it('should return correct query', () => {
+        const query = buildQuery({
+          searchIndex: searchableIndexesValues.IDENTIFIER,
+          isExcludedSeeFromLimiter: true,
+        });
+
+        expect(query).toBe('(identifiers.value=="%{query}" and authRefType=="Authorized")');
+      });
     });
   });
 
