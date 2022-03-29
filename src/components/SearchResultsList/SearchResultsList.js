@@ -93,11 +93,11 @@ const SearchResultsList = ({
     return `${match.path}/authorities/${authority.id}?${newSearch}`;
   };
 
-   useEffect(() => {
-      if (totalResults === 1) {
-        history.push(formatAuthorityRecordLink(authorities[0]));
-      }
-    }, [totalResults, authorities[0]]);
+  useEffect(() => {
+    if (totalResults === 1) {
+      history.replace(formatAuthorityRecordLink(authorities[0]));
+    }
+  }, [totalResults, authorities[0]]);
 
   const formatter = {
     authRefType: (authority) => {
