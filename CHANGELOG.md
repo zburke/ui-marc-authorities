@@ -8,6 +8,7 @@
 * [UIMARCAUTH-75](https://issues.folio.org/browse/UIMARCAUTH-75) Searching MARC authority records: Split up Exclude See from filters into two filters.
 * [UIMARCAUTH-110](https://issues.folio.org/browse/UIMARCAUTH-110) When searching Identifier (all) search option Then only return results with Authorized/Reference type = Authorized.
 * [UIMARCAUTH-112](https://issues.folio.org/browse/UIMARCAUTH-112) Renamed accordion label and facet label from Subject heading/thesaurus facet to Thesaurus facet
+* [UIMARCAUTH-111](https://issues.folio.org/browse/UIMARCAUTH-111) If only one result is returned then automatically display detail record.
 
 ## [1.0.1](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.1) (2022-03-21)
 * [UIMARCAUTH-89](https://issues.folio.org/browse/UIMARCAUTH-89) Browse option selection searches all.
