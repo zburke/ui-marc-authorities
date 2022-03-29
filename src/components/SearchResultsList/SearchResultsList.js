@@ -1,12 +1,14 @@
 import {
   useMemo,
   useContext,
+  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import {
   useRouteMatch,
   useLocation,
+  useHistory,
 } from 'react-router';
 import queryString from 'query-string';
 
@@ -64,6 +66,7 @@ const SearchResultsList = ({
   const intl = useIntl();
   const match = useRouteMatch();
   const location = useLocation();
+  const history = useHistory();
 
   const [selectedAuthorityRecordContext, setSelectedAuthorityRecordContext] = useContext(SelectedAuthorityRecordContext);
 
@@ -89,6 +92,12 @@ const SearchResultsList = ({
 
     return `${match.path}/authorities/${authority.id}?${newSearch}`;
   };
+
+   useEffect(() => {
+      if (totalResults === 1) {
+        history.push(formatAuthorityRecordLink(authorities[0]));
+      }
+    }, [totalResults, authorities[0]]);
 
   const formatter = {
     authRefType: (authority) => {
