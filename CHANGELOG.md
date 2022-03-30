@@ -1,6 +1,6 @@
 # Change history for ui-marc-authorities
 
-## [1.0.3](IN PROGRESS)
+## [1.0.3](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.3) (2022-03-30)
 * [UIMARCAUTH-89](https://issues.folio.org/browse/UIMARCAUTH-89) Browse option selection searches all.
 * [UIMARCAUTH-96](https://issues.folio.org/browse/UIMARCAUTH-96) The 6th result of browse authority record is not highlighting in bold.
 * [UIMARCAUTH-97](https://issues.folio.org/browse/UIMARCAUTH-97) The selected Heading/Reference value does not match the value highlighted in the detail record.
