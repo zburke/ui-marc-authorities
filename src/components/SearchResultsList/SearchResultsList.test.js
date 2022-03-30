@@ -16,6 +16,16 @@ import {
 
 const mockToggleFilterPane = jest.fn();
 const mockSetSelectedAuthorityRecordContext = jest.fn();
+const mockHistoryReplace = jest.fn();
+
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useHistory: () => ({
+    replace: mockHistoryReplace,
+  }),
+  useLocation: jest.fn().mockReturnValue({ search: '' }),
+  useRouteMatch: jest.fn().mockReturnValue({ path: '' }),
+}));
 
 const renderSearchResultsList = (props = {}) => render(
   <Harness selectedRecordCtxValue={[null, mockSetSelectedAuthorityRecordContext]}>
@@ -166,6 +176,28 @@ describe('Given SearchResultsList', () => {
       });
 
       expect(getByText('ui-marc-authorities.browse.noMatch.wouldBeHereLabel')).toBeDefined();
+    });
+  });
+
+  describe('When there is only one record', () => {
+    afterAll(() => {
+      jest.resetAllMocks();
+    });
+    it('Should call history.replace with specefic params', () => {
+      renderSearchResultsList({
+        authorities: [
+          {
+            id: 'cbc03a36-2870-4184-9777-0c44d07edfe4',
+            headingType: 'Geographic Name',
+            authRefType: 'Authorized',
+            headingRef: 'Springfield (Colo.)',
+          },
+        ],
+        totalResults: 1,
+      });
+      expect(mockHistoryReplace).toHaveBeenCalledWith(
+        '/authorities/cbc03a36-2870-4184-9777-0c44d07edfe4?authRefType=Authorized&headingRef=Springfield%20%28Colo.%29',
+      );
     });
   });
 });
