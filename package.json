@@ -122,6 +122,14 @@
           "records-editor.records.item.put"
         ],
         "visible": true
+      },
+      {
+        "permissionName": "ui-marc-authorities.authority-record.delete",
+        "displayName": "Delete MARC authority record",
+        "subPermissions": [
+          "records-editor.records.item.delete"
+        ],
+        "visible": true
       }
     ]
   }
