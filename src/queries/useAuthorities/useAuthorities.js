@@ -39,8 +39,7 @@ const buildRegularSearch = (searchIndex, query, isExcludedSeeFromLimiter) => {
 
       cqlSearch.push(compiledQuery);
     } else {
-      cqlSearch = query?.trim().split(/\s+/)
-        .map(q => compileQuery({ query: q }));
+      cqlSearch = compileQuery({ query: query.trim() });
     }
   }
 
@@ -116,7 +115,7 @@ const useAuthorities = ({
       return filterData.parse(finalFilterValues);
     });
 
-  let cqlQuery = [...cqlSearch, ...cqlFilters].join(' and ');
+  let cqlQuery = [cqlSearch, ...cqlFilters].join(' and ');
 
   if (sortOrder && sortedColumn) {
     cqlQuery += ` sortBy ${sortedColumn}/sort.${sortOrder}`;
@@ -152,6 +151,7 @@ const useAuthorities = ({
       return ky.get(path).json();
     }, {
       keepPreviousData: true,
+      cacheTime: 0,
     },
   );
 

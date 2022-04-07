@@ -1,6 +1,11 @@
 # Change history for ui-marc-authorities
 
+## [1.0.4] (IN PROGRESS)
+
+- [UIMARCAUTH-114](https://issues.folio.org/browse/UIMARCAUTH-114) Search for MARC Authority record with " & " special character in title - returns no results.
+
 ## [1.0.3](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.3) (2022-03-30)
+
 * [UIMARCAUTH-89](https://issues.folio.org/browse/UIMARCAUTH-89) Browse option selection searches all.
 * [UIMARCAUTH-96](https://issues.folio.org/browse/UIMARCAUTH-96) The 6th result of browse authority record is not highlighting in bold.
 * [UIMARCAUTH-97](https://issues.folio.org/browse/UIMARCAUTH-97) The selected Heading/Reference value does not match the value highlighted in the detail record.
@@ -9,6 +14,7 @@
 * [UIMARCAUTH-92](https://issues.folio.org/browse/UIMARCAUTH-92) Change MARC Authority in universal header Apps dropdown and app context menu dropdown.
 
 ## [1.0.2](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.2) (2022-03-29)
+
 * [UIMARCAUTH-108](https://issues.folio.org/browse/UIMARCAUTH-108) Cannot assign MARC authority permissions only.
 * [UIMARCAUTH-100](https://issues.folio.org/browse/UIMARCAUTH-100) Fix tag value which contains part of authority heading ref value gets highlighted at record detail view.
 * [UIMARCAUTH-112](https://issues.folio.org/browse/UIMARCAUTH-112) Renamed accordion label and facet label from Subject heading/thesaurus facet to Thesaurus facet

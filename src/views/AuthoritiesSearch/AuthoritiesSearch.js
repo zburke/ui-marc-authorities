@@ -88,7 +88,6 @@ const AuthoritiesSearch = ({
 }) => {
   const intl = useIntl();
   const [, getNamespace] = useNamespace();
-
   const history = useHistory();
   const location = useLocation();
 
@@ -148,7 +147,7 @@ const AuthoritiesSearch = ({
       setIsGoingToBaseURL(false);
     }
 
-    history.replace({
+    history.push({
       pathname,
       search: searchString,
     });
