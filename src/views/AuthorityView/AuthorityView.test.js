@@ -14,12 +14,14 @@ import AuthorityView from './AuthorityView';
 import { openEditShortcut } from '../../../test/utilities';
 
 const mockHistoryPush = jest.fn();
+const mockHistoryGoBack = jest.fn();
 const mockSetSelectedAuthorityRecordContext = jest.fn();
 
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useHistory: () => ({
     push: mockHistoryPush,
+    goBack: mockHistoryGoBack,
   }),
 }));
 
@@ -260,7 +262,7 @@ describe('Given AuthorityView', () => {
 
       fireEvent.click(getByLabelText('stripes-components.closeItem'));
 
-      expect(mockHistoryPush).toHaveBeenCalled();
+      expect(mockHistoryGoBack).toHaveBeenCalled();
     });
   });
 });

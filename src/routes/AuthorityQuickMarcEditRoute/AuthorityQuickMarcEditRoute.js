@@ -1,4 +1,6 @@
-import { useCallback } from 'react';
+import {
+  useCallback,
+} from 'react';
 import {
   useHistory,
   useRouteMatch,
@@ -13,14 +15,9 @@ const AuthorityQuickMarcEditRoute = () => {
   const location = useLocation();
   const match = useRouteMatch();
 
-  const onClose = useCallback((recordRoute) => {
-    const recordId = recordRoute.split('/')[1];
-
+  const onClose = useCallback(() => {
     setTimeout(() => {
-      history.push({
-        pathname: `/marc-authorities/authorities/${recordId}`,
-        search: location.search,
-      });
+      history.goBack();
     }, 1000);
   }, [location.search, history]);
 
