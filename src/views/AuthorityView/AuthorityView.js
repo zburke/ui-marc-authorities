@@ -20,10 +20,7 @@ import MarcView from '@folio/quick-marc/src/QuickMarcView/QuickMarcView';
 
 import { KeyShortCutsWrapper } from '../../components';
 
-import {
-  SelectedAuthorityRecordContext,
-  AuthoritiesSearchContext,
-} from '../../context';
+import { SelectedAuthorityRecordContext } from '../../context';
 import useAuthorityDeleteMutation from '../../queries/useAuthoritiesDelete/useAuthorityDelete';
 
 const propTypes = {
@@ -53,48 +50,7 @@ const AuthorityView = ({ marcSource, authority }) => {
     SelectedAuthorityRecordContext,
   );
 
-  const { searchInputValue, setSearchQuery, setIsGoingToBaseURL } = useContext(
-    AuthoritiesSearchContext,
-  );
-
   const callout = useContext(CalloutContext);
-
-  const { deleteItem } = useAuthorityDeleteMutation({
-    onMutate: () => setRequestDeletion(true),
-    onSettled: () => setRequestDeletion(false),
-    onError: () => {
-      const message = (
-        <FormattedMessage
-          id="ui-marc-authorities.authority-record.delete.error"
-          values={{ id: authority.data.id }}
-        />
-      );
-
-      callout.sendCallout({ type: 'error', message });
-      setSearchQuery(searchInputValue);
-      setIsGoingToBaseURL(true);
-      setSelectedAuthorityRecordContext(null);
-      history.push({
-        pathname: '/marc-authorities',
-      });
-    },
-    onSuccess: () => {
-      const message = (
-        <FormattedMessage
-          id="ui-marc-authorities.authority-record.delete.success"
-          values={{ id: authority.data.id }}
-        />
-      );
-
-      callout.sendCallout({ type: 'success', message });
-      setSearchQuery(searchInputValue);
-      setIsGoingToBaseURL(true);
-      setSelectedAuthorityRecordContext(null);
-      // history.push({
-      //   pathname: '/marc-authorities',
-      // });
-    },
-  });
 
   const onClose = useCallback(
     () => {
@@ -115,6 +71,32 @@ const AuthorityView = ({ marcSource, authority }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [location.search],
   );
+
+  const { deleteItem } = useAuthorityDeleteMutation({
+    onMutate: () => setRequestDeletion(true),
+    onSettled: () => setRequestDeletion(false),
+    onError: () => {
+      const message = (
+        <FormattedMessage
+          id="ui-marc-authorities.authority-record.delete.error"
+          values={{ id: authority.data.headingRef }}
+        />
+      );
+
+      callout.sendCallout({ type: 'error', message });
+    },
+    onSuccess: () => {
+      const message = (
+        <FormattedMessage
+          id="ui-marc-authorities.authority-record.delete.success"
+          values={{ id: authority.data.headingRef }}
+        />
+      );
+
+      callout.sendCallout({ type: 'success', message });
+      onClose();
+    },
+  });
 
   if (marcSource.isLoading || authority.isLoading) {
     return <LoadingView />;
