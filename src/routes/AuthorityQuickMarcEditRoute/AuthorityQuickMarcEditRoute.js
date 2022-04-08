@@ -1,4 +1,7 @@
-import { useCallback } from 'react';
+import {
+  useCallback,
+  useContext,
+} from 'react';
 import {
   useHistory,
   useRouteMatch,
@@ -8,19 +11,20 @@ import { FormattedMessage } from 'react-intl';
 
 import { Pluggable } from '@folio/stripes/core';
 
+import { SelectedAuthorityRecordContext } from '../../context';
+
 const AuthorityQuickMarcEditRoute = () => {
   const history = useHistory();
   const location = useLocation();
   const match = useRouteMatch();
+  const [, setSelectedAuthority] = useContext(SelectedAuthorityRecordContext);
 
   const onClose = useCallback((recordRoute) => {
     const recordId = recordRoute.split('/')[1];
 
+    setSelectedAuthority(null);
     setTimeout(() => {
-      history.push({
-        pathname: `/marc-authorities/authorities/${recordId}`,
-        search: location.search,
-      });
+      history.goBack();
     }, 1000);
   }, [location.search, history]);
 

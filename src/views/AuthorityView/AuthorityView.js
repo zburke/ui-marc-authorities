@@ -11,10 +11,8 @@ import {
   useIntl,
   FormattedMessage,
 } from 'react-intl';
-import queryString from 'query-string';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
-import omit from 'lodash/omit';
 
 import {
   LoadingView,
@@ -61,14 +59,7 @@ const AuthorityView = ({
     () => {
       setSelectedAuthorityRecordContext(null);
 
-      const parsedSearchParams = queryString.parse(location.search);
-      const commonSearchParams = omit(parsedSearchParams, ['authRefType', 'headingRef']);
-      const newSearchParamsString = queryString.stringify(commonSearchParams);
-
-      history.push({
-        pathname: '/marc-authorities',
-        search: newSearchParamsString,
-      });
+      history.goBack();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [location.search],
