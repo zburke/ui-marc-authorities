@@ -1,6 +1,6 @@
 # Change history for ui-marc-authorities
 
-## [1.0.4] (IN PROGRESS)
+## [1.0.4](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.4) (2022-04-08)
 
 - [UIMARCAUTH-114](https://issues.folio.org/browse/UIMARCAUTH-114) Search for MARC Authority record with " & " special character in title - returns no results.
 - [UIMARCAUTH-115](https://issues.folio.org/browse/UIMARCAUTH-115) Updated Heading and Reference is not displayed on results list.
