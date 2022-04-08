@@ -6,6 +6,7 @@ import {
 import { useQuery } from 'react-query';
 import queryString from 'query-string';
 import get from 'lodash/get';
+import remove from 'lodash/remove';
 
 import {
   useOkapiKy,
@@ -57,7 +58,7 @@ const useBrowseRequest = ({
   } = useQuery(
     [namespace, 'authoritiesBrowse', searchParams],
     async () => {
-      if (!searchQuery) {
+      if (!searchQuery && !Object.values(filters).find(value => value.length > 0)) {
         return { items: [], totalRecords: 0 };
       }
 
@@ -67,6 +68,7 @@ const useBrowseRequest = ({
     }, {
       keepPreviousData: true,
       staleTime: 5 * 60 * 1000,
+      cacheTime: 0,
     },
   );
 
@@ -147,7 +149,6 @@ const useAuthoritiesBrowse = ({
 }) => {
   const [currentQuery, setCurrentQuery] = useState(searchQuery);
   const [currentIndex, setCurrentIndex] = useState(searchIndex);
-  const [hasEmptyAnchor, setHasEmptyAnchor] = useState(false);
   const [items, setItems] = useState([]);
   const {
     page,
@@ -195,15 +196,15 @@ const useAuthoritiesBrowse = ({
   const allRequestsFetching = mainRequest.isFetching || prevPageRequest.isFetching || nextPageRequest.isFetching;
 
   useEffect(() => {
+    // remove item with an empty headingRef which appears
+    // when apply Type of heading facet without search query
+    remove(mainRequest.data?.items, item => !item.authority && !item.headingRef);
+
     setItems(mainRequest.data?.items || []);
   }, [mainRequest.data]);
 
-  useEffect(() => {
-    if (page === 0) {
-      const dataIncludesEmptyAnchor = !!mainRequest.data?.items.find(item => !item.authority);
-
-      setHasEmptyAnchor(dataIncludesEmptyAnchor);
-    }
+  const hasEmptyAnchor = useMemo(() => {
+    return page === 0 && totalRecords !== 0 && !!mainRequest.data?.items.find(item => !item.authority);
   }, [mainRequest.data]);
 
   const itemsWithPrevAndNextPages = useMemo(() => {

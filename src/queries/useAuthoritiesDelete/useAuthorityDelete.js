@@ -15,13 +15,13 @@ const useAuthorityDeleteMutation = ({ onError, onSuccess, ...restOptions }) => {
     },
   };
 
-  const { mutateAsync } = useMutation(
-    (id) => ky.delete(`records-editors/records/${id}`),
+  const { mutate } = useMutation(
+    (id) => ky.delete(`records-editor/records/${id}`),
     { ...customOptions, ...restOptions },
   );
 
   return {
-    deleteItem: mutateAsync,
+    deleteItem: mutate,
   };
 };
 

@@ -20,7 +20,10 @@ import MarcView from '@folio/quick-marc/src/QuickMarcView/QuickMarcView';
 
 import { KeyShortCutsWrapper } from '../../components';
 
-import { SelectedAuthorityRecordContext } from '../../context';
+import {
+  SelectedAuthorityRecordContext,
+  AuthoritiesSearchContext,
+} from '../../context';
 import useAuthorityDeleteMutation from '../../queries/useAuthoritiesDelete/useAuthorityDelete';
 
 const propTypes = {
@@ -50,12 +53,16 @@ const AuthorityView = ({ marcSource, authority }) => {
     SelectedAuthorityRecordContext,
   );
 
+  const { searchInputValue, setSearchQuery, setIsGoingToBaseURL } = useContext(
+    AuthoritiesSearchContext,
+  );
+
   const callout = useContext(CalloutContext);
 
   const { deleteItem } = useAuthorityDeleteMutation({
     onMutate: () => setRequestDeletion(true),
     onSettled: () => setRequestDeletion(false),
-    onError: async () => {
+    onError: () => {
       const message = (
         <FormattedMessage
           id="ui-marc-authorities.authority-record.delete.error"
@@ -63,7 +70,13 @@ const AuthorityView = ({ marcSource, authority }) => {
         />
       );
 
-      await callout.sendCallout({ type: 'error', message });
+      callout.sendCallout({ type: 'error', message });
+      setSearchQuery(searchInputValue);
+      setIsGoingToBaseURL(true);
+      setSelectedAuthorityRecordContext(null);
+      history.push({
+        pathname: '/marc-authorities',
+      });
     },
     onSuccess: () => {
       const message = (
@@ -74,6 +87,12 @@ const AuthorityView = ({ marcSource, authority }) => {
       );
 
       callout.sendCallout({ type: 'success', message });
+      setSearchQuery(searchInputValue);
+      setIsGoingToBaseURL(true);
+      setSelectedAuthorityRecordContext(null);
+      // history.push({
+      //   pathname: '/marc-authorities',
+      // });
     },
   });
 
@@ -161,11 +180,8 @@ const AuthorityView = ({ marcSource, authority }) => {
     return marcSourceClone;
   };
 
-  const onSubmit = async () => {
-    await deleteItem(authority.data.id);
-    history.push({
-      pathname: '/marc-authorities',
-    });
+  const onSubmit = () => {
+    deleteItem(authority.data.id);
   };
 
   return (
