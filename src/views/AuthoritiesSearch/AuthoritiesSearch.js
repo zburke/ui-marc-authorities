@@ -44,6 +44,7 @@ import {
   AuthoritiesSearchForm,
 } from '../../components';
 import { AuthoritiesSearchContext } from '../../context';
+import { useDidUpdate } from '../../hooks';
 import {
   navigationSegments,
   searchableIndexesValues,
@@ -113,7 +114,7 @@ const AuthoritiesSearch = ({
 
   const filterPaneVisibilityKey = getNamespace({ key: 'marcAuthoritiesFilterPaneVisibility' });
 
-  useEffect(() => {
+  useDidUpdate(() => {
     const selectedIndex = searchIndex !== searchableIndexesValues.KEYWORD ? searchIndex : '';
 
     const queryParams = {

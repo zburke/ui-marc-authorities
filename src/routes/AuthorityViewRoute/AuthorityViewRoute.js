@@ -28,7 +28,7 @@ const AuthorityViewRoute = () => {
   const authority = useAuthority(id, authRefType, headingRef);
 
   useEffect(() => {
-    if (authority && !selectedAuthority) {
+    if (authority) {
       setSelectedAuthority(authority.data);
     }
   }, [authority.data?.id]);
