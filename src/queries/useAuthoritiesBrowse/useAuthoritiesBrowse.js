@@ -62,6 +62,7 @@ const useBrowseRequest = ({
     }, {
       keepPreviousData: true,
       staleTime: 5 * 60 * 1000,
+      cacheTime: 0,
     },
   );
 
@@ -143,7 +144,6 @@ const useAuthoritiesBrowse = ({
   const [currentQuery, setCurrentQuery] = useState(searchQuery);
   const [currentIndex, setCurrentIndex] = useState(searchIndex);
   const [currentExcludeSeeFrom, setCurrentExcludeSeeFrom] = useState(isExcludedSeeFromLimiter);
-  const [hasEmptyAnchor, setHasEmptyAnchor] = useState(false);
   const [items, setItems] = useState([]);
   const {
     page,
@@ -195,12 +195,8 @@ const useAuthoritiesBrowse = ({
     setItems(mainRequest.data?.items || []);
   }, [mainRequest.data]);
 
-  useEffect(() => {
-    if (page === 0) {
-      const dataIncludesEmptyAnchor = !!mainRequest.data?.items.find(item => !item.authority);
-
-      setHasEmptyAnchor(dataIncludesEmptyAnchor);
-    }
+  const hasEmptyAnchor = useMemo(() => {
+    return page === 0 && totalRecords !== 0 && !!mainRequest.data?.items.find(item => !item.authority);
   }, [mainRequest.data]);
 
   const itemsWithPrevAndNextPages = useMemo(() => {
