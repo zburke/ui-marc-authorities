@@ -27,7 +27,7 @@ const useBrowseRequest = ({
   precedingRecordsCount,
 }) => {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace();
+  const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
 
   const cqlSearch = startingSearch ? [startingSearch] : [];
 

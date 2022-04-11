@@ -79,7 +79,7 @@ const AuthorityView = ({ marcSource, authority }) => {
       const message = (
         <FormattedMessage
           id="ui-marc-authorities.authority-record.delete.error"
-          values={{ id: authority.data.headingRef }}
+          values={{ id: <strong>{authority.data.headingRef}</strong> }}
         />
       );
 
@@ -89,7 +89,7 @@ const AuthorityView = ({ marcSource, authority }) => {
       const message = (
         <FormattedMessage
           id="ui-marc-authorities.authority-record.delete.success"
-          values={{ id: authority.data.headingRef }}
+          values={{ id: <strong>{authority.data.headingRef}</strong> }}
         />
       );
 
@@ -178,7 +178,7 @@ const AuthorityView = ({ marcSource, authority }) => {
         message={
           <FormattedMessage
             id="ui-marc-authorities.notes.message"
-            values={{ id: authority.data.id }}
+            values={{ id: <strong>{authority.data.headingRef}</strong> }}
           />
         }
         onConfirm={onSubmit}
@@ -239,7 +239,7 @@ const AuthorityView = ({ marcSource, authority }) => {
                             <FormattedMessage id="ui-marc-authorities.authority-record.edit" />
                           </Button>
                         </IfPermission>
-                        <IfPermission perm="ui-marc-authorities.authority-record.edit">
+                        <IfPermission perm="ui-marc-authorities.authority-record.delete">
                           <Button
                             onClick={() => setRequestDeletion(true)}
                             buttonStyle="dropdownItem"

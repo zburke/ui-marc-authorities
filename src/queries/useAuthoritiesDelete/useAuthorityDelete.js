@@ -1,21 +1,26 @@
-import { useMutation } from 'react-query';
-import { useOkapiKy } from '@folio/stripes/core';
+import { useMutation, useQueryClient } from 'react-query';
+import { useOkapiKy, useNamespace } from '@folio/stripes/core';
 
 
 const useAuthorityDeleteMutation = ({ onError, onSuccess, ...restOptions }) => {
   const ky = useOkapiKy();
+  const queryClient = useQueryClient();
+  const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
 
   const customOptions = {
     onError: () => {
       return onError();
     },
 
-    onSuccess: () => {
+    onSuccess: async () => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      queryClient.invalidateQueries(namespace);
       return onSuccess();
     },
   };
 
   const { mutate } = useMutation(
+    namespace,
     (id) => ky.delete(`records-editor/records/${id}`),
     { ...customOptions, ...restOptions },
   );

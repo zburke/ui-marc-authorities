@@ -74,7 +74,7 @@ const useAuthorities = ({
   sortedColumn,
 }) => {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace();
+  const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
 
   const [offset, setOffset] = useState(0);
 

@@ -16,6 +16,7 @@ import { openEditShortcut } from '../../../test/utilities';
 const mockHistoryPush = jest.fn();
 const mockSetSelectedAuthorityRecordContext = jest.fn();
 
+
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useHistory: () => ({
@@ -221,6 +222,53 @@ describe('Given AuthorityView', () => {
       fireEvent.click(getByText('ui-marc-authorities.authority-record.edit'));
 
       expect(mockHistoryPush).toHaveBeenCalled();
+    });
+  });
+
+  describe('when click on "Delete" button', () => {
+    it('should display ConfirmationModal', () => {
+      const { getByText } = renderAuthorityView();
+
+      fireEvent.click(getByText('ui-marc-authorities.authority-record.delete'));
+
+      expect(getByText('ui-marc-authorities.notes.deleteNote')).toBeDefined();
+    });
+  });
+
+  describe('when confirmationModal is opened', () => {
+    describe('when click Delete', () => {
+      it('should hide ConfirmationModal and display success message', done => {
+        const { getByText, queryByText } = renderAuthorityView();
+
+        fireEvent.click(
+          getByText('ui-marc-authorities.authority-record.delete'),
+        );
+        fireEvent.click(getByText('stripes-smart-components.notes.delete'));
+
+        setTimeout(() => {
+          expect(
+            queryByText('ui-marc-authorities.notes.deleteNote'),
+          ).toBeNull();
+          expect(getByText('ui-marc-authorities.authority-record.delete.success').toBeDefined());
+          done();
+        }, 600);
+      });
+    });
+
+    describe('when click Cancel', () => {
+      it('should hide ConfirmationModal', async () => {
+        const { getByText, getByRole, queryByText } = renderAuthorityView();
+
+        fireEvent.click(
+          getByText('ui-marc-authorities.authority-record.delete'),
+        );
+        fireEvent.click(
+          getByRole('button', {
+            name: 'stripes-components.cancel',
+          }),
+        );
+        expect(queryByText('ui-marc-authorities.notes.deleteNote')).toBeNull();
+      });
     });
   });
 
