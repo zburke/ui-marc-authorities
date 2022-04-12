@@ -24,6 +24,22 @@ jest.mock('react-router', () => ({
   }),
 }));
 
+jest.mock('@folio/stripes/components', () => ({
+  ...jest.requireActual('@folio/stripes/components'),
+  LoadingView: () => (<div>Loading view</div>),
+  ConfirmationModal: jest.fn(({ open, onCancel, onConfirm }) => (open ? (
+    <div>
+      <span>Confirmation modal</span>
+      <button type="button" onClick={onCancel}>
+          Cancel
+      </button>
+      <button type="button" id="confirmButton" onClick={onConfirm}>
+          Delete
+      </button>
+    </div>
+  ) : null)),
+}));
+
 const marcSource = {
   data: {
     parsedRecord: {
@@ -231,43 +247,32 @@ describe('Given AuthorityView', () => {
 
       fireEvent.click(getByText('ui-marc-authorities.authority-record.delete'));
 
-      expect(getByText('ui-marc-authorities.notes.deleteNote')).toBeDefined();
+      expect(getByText('Confirmation modal')).toBeDefined();
     });
   });
 
   describe('when confirmationModal is opened', () => {
     describe('when click Delete', () => {
-      it('should hide ConfirmationModal and display success message', done => {
+      it('should hide ConfirmationModal', async () => {
         const { getByText, queryByText } = renderAuthorityView();
 
         fireEvent.click(
           getByText('ui-marc-authorities.authority-record.delete'),
         );
-        fireEvent.click(getByText('stripes-smart-components.notes.delete'));
-
-        setTimeout(() => {
-          expect(
-            queryByText('ui-marc-authorities.notes.deleteNote'),
-          ).toBeNull();
-          expect(getByText('ui-marc-authorities.authority-record.delete.success').toBeDefined());
-          done();
-        }, 600);
+        fireEvent.click(getByText('Delete'));
+        expect(queryByText('Confirmation modal')).toBeNull();
       });
     });
 
     describe('when click Cancel', () => {
       it('should hide ConfirmationModal', async () => {
-        const { getByText, getByRole, queryByText } = renderAuthorityView();
+        const { getByText, queryByText } = renderAuthorityView();
 
         fireEvent.click(
           getByText('ui-marc-authorities.authority-record.delete'),
         );
-        fireEvent.click(
-          getByRole('button', {
-            name: 'stripes-components.cancel',
-          }),
-        );
-        expect(queryByText('ui-marc-authorities.notes.deleteNote')).toBeNull();
+        fireEvent.click(getByText('Cancel'));
+        expect(queryByText('Confirmation modal')).toBeNull();
       });
     });
   });

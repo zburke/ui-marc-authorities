@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useOkapiKy, useNamespace } from '@folio/stripes/core';
 
 
-const useAuthorityDeleteMutation = ({ onError, onSuccess, ...restOptions }) => {
+const useAuthorityDelete = ({ onError, onSuccess, ...restOptions }) => {
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
   const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
@@ -19,15 +19,17 @@ const useAuthorityDeleteMutation = ({ onError, onSuccess, ...restOptions }) => {
     },
   };
 
-  const { mutate } = useMutation(
-    namespace,
-    (id) => ky.delete(`records-editor/records/${id}`),
-    { ...customOptions, ...restOptions },
-  );
+  const { mutate } = useMutation({
+    mutationFn: (id) => {
+      return ky.delete(`records-editor/records/${id}`);
+    },
+    ...customOptions,
+    ...restOptions,
+  });
 
   return {
     deleteItem: mutate,
   };
 };
 
-export default useAuthorityDeleteMutation;
+export default useAuthorityDelete;

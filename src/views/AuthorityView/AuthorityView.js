@@ -21,7 +21,7 @@ import MarcView from '@folio/quick-marc/src/QuickMarcView/QuickMarcView';
 import { KeyShortCutsWrapper } from '../../components';
 
 import { SelectedAuthorityRecordContext } from '../../context';
-import useAuthorityDeleteMutation from '../../queries/useAuthoritiesDelete/useAuthorityDelete';
+import useAuthorityDelete from '../../queries/useAuthoritiesDelete/useAuthorityDelete';
 
 const propTypes = {
   authority: PropTypes.shape({
@@ -72,8 +72,7 @@ const AuthorityView = ({ marcSource, authority }) => {
     [location.search],
   );
 
-  const { deleteItem } = useAuthorityDeleteMutation({
-    onMutate: () => setRequestDeletion(true),
+  const { deleteItem } = useAuthorityDelete({
     onSettled: () => setRequestDeletion(false),
     onError: () => {
       const message = (
@@ -164,6 +163,7 @@ const AuthorityView = ({ marcSource, authority }) => {
 
   const onSubmit = () => {
     deleteItem(authority.data.id);
+    setRequestDeletion(false);
   };
 
   return (
