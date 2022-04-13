@@ -8,7 +8,10 @@ import {
   useHistory,
   useLocation,
 } from 'react-router';
-import { useIntl, FormattedMessage } from 'react-intl';
+import {
+  useIntl,
+  FormattedMessage,
+} from 'react-intl';
 import queryString from 'query-string';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';

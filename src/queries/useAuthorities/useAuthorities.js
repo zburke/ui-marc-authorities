@@ -140,16 +140,11 @@ const useAuthorities = ({
   } = useQuery(
     [namespace, searchParams],
     async () => {
-      if (
-        !searchQuery &&
-        !Object.values(filters).find((value) => value.length > 0)
-      ) {
+      if (!searchQuery && !Object.values(filters).find((value) => value.length > 0)) {
         return { authorities: [], totalRecords: 0 };
       }
 
-      const path = `${AUTHORITIES_API}?${queryString.stringify(
-        searchParams,
-      )}`.replace(/\+/g, '%20');
+      const path = `${AUTHORITIES_API}?${queryString.stringify(searchParams)}`.replace(/\+/g, '%20');
 
       return ky.get(path).json();
     }, {

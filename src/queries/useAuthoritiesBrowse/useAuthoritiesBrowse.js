@@ -8,7 +8,10 @@ import queryString from 'query-string';
 import get from 'lodash/get';
 import remove from 'lodash/remove';
 
-import { useOkapiKy, useNamespace } from '@folio/stripes/core';
+import {
+  useOkapiKy,
+  useNamespace,
+} from '@folio/stripes/core';
 
 import { buildHeadingTypeQuery } from '../utils';
 import { filterConfig } from '../../constants';
@@ -31,9 +34,7 @@ const useBrowseRequest = ({
   const cqlFilters = Object.entries(filters)
     .filter(([, filterValues]) => filterValues.length)
     .map(([filterName, filterValues]) => {
-      const filterData = filterConfig.find(
-        (filter) => filter.name === filterName,
-      );
+      const filterData = filterConfig.find((filter) => filter.name === filterName);
 
       return filterData ? filterData.parse(filterValues) : null;
     });
