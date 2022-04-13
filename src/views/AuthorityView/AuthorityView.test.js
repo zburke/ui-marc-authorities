@@ -16,7 +16,6 @@ import { openEditShortcut } from '../../../test/utilities';
 const mockHistoryPush = jest.fn();
 const mockSetSelectedAuthorityRecordContext = jest.fn();
 
-
 jest.mock('react-router', () => ({
   ...jest.requireActual('react-router'),
   useHistory: () => ({

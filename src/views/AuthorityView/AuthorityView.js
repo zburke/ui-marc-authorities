@@ -1,6 +1,13 @@
-import { useContext, useCallback, useState } from 'react';
+import {
+  useContext,
+  useCallback,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useLocation } from 'react-router';
+import {
+  useHistory,
+  useLocation,
+} from 'react-router';
 import { useIntl, FormattedMessage } from 'react-intl';
 import queryString from 'query-string';
 import cloneDeep from 'lodash/cloneDeep';
@@ -43,7 +50,10 @@ const propTypes = {
   }).isRequired,
 };
 
-const AuthorityView = ({ marcSource, authority }) => {
+const AuthorityView = ({
+  marcSource,
+  authority,
+}) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const intl = useIntl();
   const history = useHistory();
@@ -117,12 +127,12 @@ const AuthorityView = ({ marcSource, authority }) => {
 
   const markHighlightedFields = () => {
     const highlightAuthRefFields = {
-      Authorized: /1\d\d/,
-      Reference: /4\d\d/,
+      'Authorized': /1\d\d/,
+      'Reference': /4\d\d/,
       'Auth/Ref': /5\d\d/,
     };
 
-    const marcFields = marcSource.data.parsedRecord.content.fields.map((field) => {
+    const marcFields = marcSource.data.parsedRecord.content.fields.map(field => {
       const tag = Object.keys(field)[0];
 
       const isHighlightedTag = highlightAuthRefFields[authority.data.authRefType].test(tag);
@@ -227,8 +237,6 @@ const AuthorityView = ({ marcSource, authority }) => {
             }
           />
         </div>
-      </KeyShortCutsWrapper>
-      <div data-testid="authority-marc-view">
         <ConfirmationModal
           id="confirm-delete-note"
           open={deleteModalOpen}
@@ -251,7 +259,7 @@ const AuthorityView = ({ marcSource, authority }) => {
             <FormattedMessage id="stripes-smart-components.notes.delete" />
           }
         />
-      </div>
+      </KeyShortCutsWrapper>
     </>
   );
 };
