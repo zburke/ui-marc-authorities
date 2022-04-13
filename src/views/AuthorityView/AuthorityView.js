@@ -15,7 +15,11 @@ import {
   Button,
   ConfirmationModal,
 } from '@folio/stripes/components';
-import { useStripes, IfPermission, CalloutContext } from '@folio/stripes/core';
+import {
+  useStripes,
+  IfPermission,
+  CalloutContext,
+} from '@folio/stripes/core';
 import MarcView from '@folio/quick-marc/src/QuickMarcView/QuickMarcView';
 
 import { KeyShortCutsWrapper } from '../../components';
@@ -40,15 +44,13 @@ const propTypes = {
 };
 
 const AuthorityView = ({ marcSource, authority }) => {
-  const [requestDeletion, setRequestDeletion] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const intl = useIntl();
   const history = useHistory();
   const location = useLocation();
   const stripes = useStripes();
 
-  const [, setSelectedAuthorityRecordContext] = useContext(
-    SelectedAuthorityRecordContext,
-  );
+  const [, setSelectedAuthorityRecordContext] = useContext(SelectedAuthorityRecordContext);
 
   const callout = useContext(CalloutContext);
 
@@ -57,10 +59,7 @@ const AuthorityView = ({ marcSource, authority }) => {
       setSelectedAuthorityRecordContext(null);
 
       const parsedSearchParams = queryString.parse(location.search);
-      const commonSearchParams = omit(parsedSearchParams, [
-        'authRefType',
-        'headingRef',
-      ]);
+      const commonSearchParams = omit(parsedSearchParams, ['authRefType', 'headingRef']);
       const newSearchParamsString = queryString.stringify(commonSearchParams);
 
       history.push({
@@ -73,12 +72,12 @@ const AuthorityView = ({ marcSource, authority }) => {
   );
 
   const { deleteItem } = useAuthorityDelete({
-    onSettled: () => setRequestDeletion(false),
+    onSettled: () => setDeleteModalOpen(false),
     onError: () => {
       const message = (
         <FormattedMessage
           id="ui-marc-authorities.authority-record.delete.error"
-          values={{ id: <strong>{authority.data.headingRef}</strong> }}
+          values={{ headingRef: authority.data.headingRef }}
         />
       );
 
@@ -88,7 +87,7 @@ const AuthorityView = ({ marcSource, authority }) => {
       const message = (
         <FormattedMessage
           id="ui-marc-authorities.authority-record.delete.success"
-          values={{ id: <strong>{authority.data.headingRef}</strong> }}
+          values={{ headingRef:  authority.data.headingRef }}
         />
       );
 
@@ -123,37 +122,31 @@ const AuthorityView = ({ marcSource, authority }) => {
       'Auth/Ref': /5\d\d/,
     };
 
-    const marcFields = marcSource.data.parsedRecord.content.fields.map(
-      (field) => {
-        const tag = Object.keys(field)[0];
+    const marcFields = marcSource.data.parsedRecord.content.fields.map((field) => {
+      const tag = Object.keys(field)[0];
 
-        const isHighlightedTag =
-          highlightAuthRefFields[authority.data.authRefType].test(tag);
+      const isHighlightedTag = highlightAuthRefFields[authority.data.authRefType].test(tag);
 
-        if (!isHighlightedTag) {
-          return field;
-        }
+      if (!isHighlightedTag) {
+        return field;
+      }
 
-        const fieldContent = field[tag].subfields
-          .reduce((contentArr, subfield) => {
-            const subfieldValue = Object.values(subfield)[0];
+      const fieldContent = field[tag].subfields.reduce((contentArr, subfield) => {
+        const subfieldValue = Object.values(subfield)[0];
 
-            return [...contentArr, subfieldValue];
-          }, [])
-          .join(' ');
+        return [...contentArr, subfieldValue];
+      }, []).join(' ');
 
-        const isHeadingRefMatching = fieldContent === authority.data.headingRef;
+      const isHeadingRefMatching = fieldContent === authority.data.headingRef;
 
-        return {
-          ...field,
-          [tag]: {
-            ...field[tag],
-            isHighlighted: isHeadingRefMatching && isHighlightedTag,
-          },
-        };
-      },
-    );
-
+      return {
+        ...field,
+        [tag]: {
+          ...field[tag],
+          isHighlighted: isHeadingRefMatching && isHighlightedTag,
+        },
+      };
+    });
     const marcSourceClone = cloneDeep(marcSource);
 
     set(marcSourceClone, 'data.parsedRecord.content.fields', marcFields);
@@ -161,34 +154,13 @@ const AuthorityView = ({ marcSource, authority }) => {
     return marcSourceClone;
   };
 
-  const onSubmit = () => {
+  const onConfirmDelete = () => {
     deleteItem(authority.data.id);
-    setRequestDeletion(false);
+    setDeleteModalOpen(false);
   };
 
   return (
     <>
-      <ConfirmationModal
-        id="confirm-delete-note"
-        open={requestDeletion}
-        heading={<FormattedMessage id="ui-marc-authorities.notes.deleteNote" />}
-        ariaLabel={intl.formatMessage({
-          id: 'ui-marc-authorities.notes.deleteNote',
-        })}
-        message={
-          <FormattedMessage
-            id="ui-marc-authorities.notes.message"
-            values={{ id: <strong>{authority.data.headingRef}</strong> }}
-          />
-        }
-        onConfirm={onSubmit}
-        buttonStyle="danger"
-        onCancel={() => setRequestDeletion(false)}
-        confirmLabel={
-          <FormattedMessage id="stripes-smart-components.notes.delete" />
-        }
-      />
-
       <KeyShortCutsWrapper
         onEdit={redirectToQuickMarcEditPage}
         canEdit={hasEditPermission()}
@@ -241,7 +213,7 @@ const AuthorityView = ({ marcSource, authority }) => {
                         </IfPermission>
                         <IfPermission perm="ui-marc-authorities.authority-record.delete">
                           <Button
-                            onClick={() => setRequestDeletion(true)}
+                            onClick={() => setDeleteModalOpen(true)}
                             buttonStyle="dropdownItem"
                           >
                             <FormattedMessage id="ui-marc-authorities.authority-record.delete" />
@@ -256,6 +228,30 @@ const AuthorityView = ({ marcSource, authority }) => {
           />
         </div>
       </KeyShortCutsWrapper>
+      <div data-testid="authority-marc-view">
+        <ConfirmationModal
+          id="confirm-delete-note"
+          open={deleteModalOpen}
+          heading={
+            <FormattedMessage id="ui-marc-authorities.notes.deleteNote" />
+          }
+          ariaLabel={intl.formatMessage({
+            id: 'ui-marc-authorities.notes.deleteNote',
+          })}
+          message={
+            <FormattedMessage
+              id="ui-marc-authorities.notes.message"
+              values={{ headingRef: authority.data.headingRef }}
+            />
+          }
+          onConfirm={onConfirmDelete}
+          buttonStyle="danger"
+          onCancel={() => setDeleteModalOpen(false)}
+          confirmLabel={
+            <FormattedMessage id="stripes-smart-components.notes.delete" />
+          }
+        />
+      </div>
     </>
   );
 };

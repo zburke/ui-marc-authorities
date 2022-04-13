@@ -1,19 +1,16 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useOkapiKy, useNamespace } from '@folio/stripes/core';
 
-
 const useAuthorityDelete = ({ onError, onSuccess, ...restOptions }) => {
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
-  const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
+  const [namespace] = useNamespace({ key: 'authorities' });
 
   const customOptions = {
-    onError: () => {
-      return onError();
-    },
-
+    onError,
     onSuccess: async () => {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Creating a delay because result list takes some time to update
+      await new Promise((resolve) => setTimeout(resolve, 500));
       queryClient.invalidateQueries(namespace);
       return onSuccess();
     },

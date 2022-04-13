@@ -1,15 +1,9 @@
-import {
-  useState,
-  useEffect,
-} from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import queryString from 'query-string';
 import template from 'lodash/template';
 
-import {
-  useOkapiKy,
-  useNamespace,
-} from '@folio/stripes/core';
+import { useOkapiKy, useNamespace } from '@folio/stripes/core';
 import { defaultAdvancedSearchQueryBuilder } from '@folio/stripes-components';
 
 import { buildQuery } from '../utils';
@@ -74,7 +68,7 @@ const useAuthorities = ({
   sortedColumn,
 }) => {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'authoritiesBrowse' });
+  const [namespace] = useNamespace({ key: 'authorities' });
 
   const [offset, setOffset] = useState(0);
 
@@ -100,12 +94,16 @@ const useAuthorities = ({
   const cqlFilters = Object.entries(filters)
     .filter(([, filterValues]) => filterValues.length)
     .map(([filterName, filterValues]) => {
-      const filterData = filterConfig.find(filter => filter.name === filterName);
+      const filterData = filterConfig.find(
+        (filter) => filter.name === filterName,
+      );
 
       let finalFilterValues = filterValues;
 
       if (filterName === FILTERS.SUBJECT_HEADINGS) {
-        const filterValuesForSubjectHeadings = filterValues.map(name => subjectHeadingsMap[name]);
+        const filterValuesForSubjectHeadings = filterValues.map(
+          (name) => subjectHeadingsMap[name],
+        );
 
         finalFilterValues = filterValuesForSubjectHeadings;
       }
@@ -133,34 +131,36 @@ const useAuthorities = ({
     return authoritiesArray;
   };
 
-  const {
-    isFetching,
-    isFetched,
-    data,
-  } = useQuery(
+  const { isFetching, isFetched, data } = useQuery(
     [namespace, searchParams],
     async () => {
-      if (!searchQuery && !Object.values(filters).find(value => value.length > 0)) {
+      if (
+        !searchQuery &&
+        !Object.values(filters).find((value) => value.length > 0)
+      ) {
         return { authorities: [], totalRecords: 0 };
       }
 
-      const path = `${AUTHORITIES_API}?${queryString.stringify(searchParams)}`.replace(/\+/g, '%20');
+      const path = `${AUTHORITIES_API}?${queryString.stringify(
+        searchParams,
+      )}`.replace(/\+/g, '%20');
 
       return ky.get(path).json();
-    }, {
+    },
+    {
       keepPreviousData: true,
       cacheTime: 0,
     },
   );
 
-  return ({
+  return {
     totalRecords: data?.totalRecords || 0,
     authorities: fillOffsetWithNull(data?.authorities),
     isLoading: isFetching,
     isLoaded: isFetched,
     query: cqlQuery,
     setOffset,
-  });
+  };
 };
 
 export default useAuthorities;

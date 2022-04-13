@@ -11,8 +11,8 @@
 
   "authority-record.edit": "Edit",
   "authority-record.delete": "Delete",
-  "authority-record.delete.success": "MARC authority record {id} has been deleted",
-  "authority-record.delete.error": "Unable to delete MARC authority record {id}. Please try again. ",
+  "authority-record.delete.success": "MARC authority record <strong> {headingRef} </strong> has been deleted",
+  "authority-record.delete.error": "Unable to delete MARC authority record <strong> {headingRef} </strong>. Please try again. ",
 
   "label.search": "Search",
   "label.search.textArea": "Enter search query",
@@ -63,5 +63,5 @@
   "shortcut.find": "Find",
 
   "notes.deleteNote": "Confirm deletion of authority record",
-  "notes.message": "Are you sure you want to permanently delete the authority record: {id}?"
+  "notes.message": "Are you sure you want to permanently delete the authority record: <strong> {headingRef} </strong>?"
 }
