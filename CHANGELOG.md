@@ -8,6 +8,7 @@
 - [UIMARCAUTH-111](https://issues.folio.org/browse/UIMARCAUTH-111) If only one result is returned then automatically display detail record.
 - [UIMARCAUTH-67](https://issues.folio.org/browse/UIMARCAUTH-67) Permission: Delete MARC authority record.
 - [UIMARCAUTH-88](https://issues.folio.org/browse/UIMARCAUTH-88) Browse authorities: Add Heading type facet.
+- [UIMARCAUTH-122](https://issues.folio.org/browse/UIMARCAUTH-122) Correctly allow horizontal scrolling in details pane.
 
 ## [1.0.4](https://github.com/folio-org/ui-marc-authorities/tree/v1.0.4) (2022-04-08)
 
