@@ -135,7 +135,7 @@ const AuthorityView = ({
       canEdit={hasEditPermission()}
     >
       <MarcView
-        paneWidth="100%"
+        paneWidth="40%"
         paneTitle={authority.data.headingRef}
         paneSub={intl.formatMessage({
           id: 'ui-marc-authorities.authorityRecordSubtitle',
