@@ -23,6 +23,22 @@ jest.mock('react-router', () => ({
   }),
 }));
 
+jest.mock('@folio/stripes/components', () => ({
+  ...jest.requireActual('@folio/stripes/components'),
+  LoadingView: () => (<div>Loading view</div>),
+  ConfirmationModal: jest.fn(({ open, onCancel, onConfirm }) => (open ? (
+    <div>
+      <span>Confirmation modal</span>
+      <button type="button" onClick={onCancel}>
+          Cancel
+      </button>
+      <button type="button" id="confirmButton" onClick={onConfirm}>
+          Delete
+      </button>
+    </div>
+  ) : null)),
+}));
+
 const marcSource = {
   data: {
     parsedRecord: {
@@ -221,6 +237,42 @@ describe('Given AuthorityView', () => {
       fireEvent.click(getByText('ui-marc-authorities.authority-record.edit'));
 
       expect(mockHistoryPush).toHaveBeenCalled();
+    });
+  });
+
+  describe('when click on "Delete" button', () => {
+    it('should display ConfirmationModal', () => {
+      const { getByText } = renderAuthorityView();
+
+      fireEvent.click(getByText('ui-marc-authorities.authority-record.delete'));
+
+      expect(getByText('Confirmation modal')).toBeDefined();
+    });
+  });
+
+  describe('when confirmationModal is opened', () => {
+    describe('when click Delete', () => {
+      it('should hide ConfirmationModal', async () => {
+        const { getByText, queryByText } = renderAuthorityView();
+
+        fireEvent.click(
+          getByText('ui-marc-authorities.authority-record.delete'),
+        );
+        fireEvent.click(getByText('Delete'));
+        expect(queryByText('Confirmation modal')).toBeNull();
+      });
+    });
+
+    describe('when click Cancel', () => {
+      it('should hide ConfirmationModal', async () => {
+        const { getByText, queryByText } = renderAuthorityView();
+
+        fireEvent.click(
+          getByText('ui-marc-authorities.authority-record.delete'),
+        );
+        fireEvent.click(getByText('Cancel'));
+        expect(queryByText('Confirmation modal')).toBeNull();
+      });
     });
   });
 
